@@ -1,0 +1,719 @@
+<!DOCTYPE html> 
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Import - Importação 360°</title>
+    <style>
+        :root {
+            --primary: #0A192F;
+            --secondary: #172A45;
+            --accent: #38BDF8;
+            --accent-gradient: linear-gradient(135deg, #38BDF8 0%, #818CF8 100%);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --bg-body: #090D16;
+            --bg-card: #1E293B;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        /* HEADER / NAVBAR COM GLASSMORPHISM */
+        header {
+            background-color: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-cta {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent) !important;
+            padding: 8px 18px;
+            border-radius: 6px;
+            transition: all 0.3s ease !important;
+        }
+
+        .nav-cta:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: var(--accent);
+        }
+
+        /* HERO SECTION HIGH-TECH */
+        .hero {
+            background: radial-gradient(circle at 50% 20%, #172A45 0%, #0A192F 60%, #090D16 100%);
+            color: white;
+            padding: 140px 20px 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            letter-spacing: -1.5px;
+            line-height: 1.15;
+            color: #FFFFFF;
+        }
+
+        .hero h1 span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 750px;
+            margin: 0 auto 40px;
+            color: var(--text-muted);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .cta-button {
+            background: var(--accent-gradient);
+            color: #0A192F;
+            padding: 16px 36px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 16px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        /* HERO STATS BAR */
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(23, 42, 69, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 16px;
+        }
+
+        .stat-item h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* SECTIONS GENERAL */
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        /* ECOSYSTEM / SERVICES GRID */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .service-card h3 {
+            margin-top: 0;
+            color: #FFFFFF;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* RTU SECTION */
+        .rtu-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+        }
+
+        .rtu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        @media(max-width: 768px) {
+            .rtu-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+        }
+
+        .rtu-box {
+            background: rgba(10, 25, 47, 0.6);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .rtu-box h4 {
+            color: #FFFFFF;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rtu-box ul {
+            list-style-type: none;
+        }
+
+        .rtu-box ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .rtu-box ul li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* COMPARISON TABLE */
+        .table-wrapper {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 20px 25px;
+        }
+
+        .comparison-table th {
+            background-color: #0A192F;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: rgba(23, 42, 69, 0.4);
+        }
+
+        .comparison-table tr:not(:last-child) td {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table td {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .comparison-table td:first-child {
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        /* VIDEOS SECTION */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .video-info {
+            padding: 25px;
+        }
+
+        .video-info h3 {
+            color: #FFFFFF;
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+        }
+
+        .video-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* COMMUNITIES */
+        .communities {
+            background: linear-gradient(135deg, #172A45 0%, #0A192F 100%);
+            color: white;
+            text-align: center;
+            border-radius: 24px;
+            margin: 40px auto;
+            padding: 80px 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .communities h2 {
+            color: white;
+        }
+
+        .communities p {
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            background: rgba(56, 189, 248, 0.05);
+            padding: 12px 30px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background-color: var(--accent);
+            color: #0A192F;
+            border-color: var(--accent);
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #05080E;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="logo">Nexus<span>Import</span></div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#ecosystem">Ecossistema</a>
+            <a href="#rtu">O que é RTU</a>
+            <a href="#comparativo">Comparativo</a>
+            <a href="#videos">Vídeos</a>
+            <a href="#comunidades" class="nav-cta">Comunidade</a>
+        </div>
+    </nav>
+</header>
+
+<section id="home" class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span>⚡ Inteligência em Importação B2B</span>
+        </div>
+        <h1>Sua Importação 360° com <span>Eficiência e Legalidade</span></h1>
+        <p>Descomplicamos o processo de importação para o seu negócio. Da China ao Paraguai, e do Paraguai ao Brasil via RTU com total segurança jurídica e alta performance.</p>
+        
+        <div class="hero-actions">
+            <a href="#ecosystem" class="cta-button">Explorar Ecossistema</a>
+            <a href="#rtu" class="cta-secondary">Entenda o RTU</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <h3>~32%</h3>
+                <p>Carga Tributária Unificada</p>
+            </div>
+            <div class="stat-item">
+                <h3>1 Dia</h3>
+                <p>Ciclo de Operação na Fronteira</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Conformidade com a Receita</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="ecosystem">
+    <h2>Nosso Ecossistema</h2>
+    <p class="section-subtitle">Soluções integradas estruturadas para maximizar os resultados da sua operação comercial.</p>
+    <div class="services-grid">
+        <div class="service-card">
+            <h3>Nexus Academy</h3>
+            <p>Cursos e treinamentos especializados para capacitar você na habilitação e operação correta via RTU.</p>
+        </div>
+        <div class="service-card">
+            <h3>Nexus Supply</h3>
+            <p>Loja própria em Ciudad del Este com grande variedade de produtos homologados na lista positiva.</p>
+        </div>
+        <div class="service-card">
+            <h3>Nexus Concierge</h3>
+            <p>Acompanhamento VIP e personalizado desde o receptivo até o despacho aduaneiro na fronteira.</p>
+        </div>
+        <div class="service-card">
+            <h3>Assessoria Aduaneira</h3>
+            <p>Suporte completo e consultoria especializada para garantir a total legalidade da sua mercadoria no Brasil.</p>
+        </div>
+    </div>
+</section>
+
+<section id="rtu">
+    <div class="rtu-container">
+        <h2>O que é o RTU?</h2>
+        <p class="section-subtitle" style="margin-bottom: 20px;">O Regime de Tributação Unificada (RTU) é a solução ideal para microempreendedores (MEI/Simples Nacional) importarem mercadorias em Ciudad del Este de forma desburocratizada.</p>
+        
+        <p style="text-align: center; color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; font-size: 1rem;">
+            Com o pagamento unificado de impostos federais (~32%) sob regime simplificado, você opera de forma 100% legalizada através da fronteira terrestre, adquirindo produtos de lojas devidamente homologadas pela Receita Federal.
+        </p>
+
+        <div class="rtu-grid">
+            <div class="rtu-box">
+                <h4>📋 Diretrizes e Requisitos</h4>
+                <ul>
+                    <li><strong>Habilitação Prévia:</strong> Exige processo via e-CAC da Receita Federal com jurisdição em Foz do Iguaçu.</li>
+                    <li><strong>Lojas Homologadas:</strong> Aquisições restritas a estabelecimentos cadastrados e autorizados.</li>
+                    <li><strong>Destino:</strong> Mercadorias voltadas exclusivamente para revenda a consumidor final.</li>
+                </ul>
+            </div>
+            
+            <div class="rtu-box">
+                <h4>📦 Listagens Oficiais</h4>
+                <ul>
+                    <li><strong>Lista Positiva:</strong> Focada principalmente em eletrônicos, eletroeletrônicos e eletrodomésticos permitidos.</li>
+                    <li><strong>Lista Negativa:</strong> Proibição rigorosa para armas, munições, explosivos, bebidas alcoólicas e cigarros.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/manuais/rtu-regime-de-tributacao-unificada" target="_blank" class="cta-button">Acessar Legislação Oficial (Receita Federal)</a>
+        </div>
+    </div>
+</section>
+
+<section id="comparativo">
+    <h2>Comparativo de Importação</h2>
+    <p class="section-subtitle">Veja por que o modelo Nexus Import via RTU supera a importação tradicional direta da China em agilidade e custos.</p>
+    
+    <div class="table-wrapper">
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Característica</th>
+                    <th>Importação Direta (China/Brasil)</th>
+                    <th>Nexus Import (Via Paraguai/RTU)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Carga Tributária</td>
+                    <td>Elevada e fragmentada (II, IPI, PIS, COFINS, ICMS)</td>
+                    <td>Unificada em torno de ~32% com tributos federais inclusos</td>
+                </tr>
+                <tr>
+                    <td>Processo Aduaneiro</td>
+                    <td>Complexo, burocrático e exigente (RADAR/Siscomex)</td>
+                    <td>Simplificado e ágil via fronteira terrestre</td>
+                </tr>
+                <tr>
+                    <td>Tempo de Ciclo</td>
+                    <td>Longo (Semanas ou meses de trânsito internacional)</td>
+                    <td>Curto (Operação otimizada em um único dia)</td>
+                </tr>
+                <tr>
+                    <td>Logística e Custos</td>
+                    <td>Fretes internacionais altos e armazéns caros</td>
+                    <td>Custos de translado terrestre reduzidos e eficientes</td>
+                </tr>
+                <tr>
+                    <td>Intermediários</td>
+                    <td>Diversos (Tradings, despachantes externos)</td>
+                    <td>Ecossistema Próprio unificado e suporte direto</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="videos">
+    <h2>Vídeos e Conteúdos Explicativos</h2>
+    <p class="section-subtitle">Acompanhe nossos materiais visuais para entender a fundo o funcionamento prático do RTU e as normas aduaneiras.</p>
+    
+    <div class="video-grid">
+        <!-- Vídeo 1 -->
+        <div class="video-card">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/8Nul0wa23OA" title="RTU - Regime Tributário Unificado" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <h3>RTU - Regime Tributário Unificado</h3>
+                <p>Entenda a base legal, o funcionamento do regime, limites de importação e regras governamentais.</p>
+            </div>
+        </div>
+
+        <!-- Vídeo 2 -->
+        <div class="video-card">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/tIG4KMOoG9I" title="Receita Federal Explica: Cotas e Multas" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <h3>Receita Federal Explica: Cotas e Multas</h3>
+                <p>Esclarecimentos cruciais sobre cotas, regras de declaração, riscos e zonas alfandegárias.</p>
+            </div>
+        </div>
+
+        <!-- Vídeo 3 (Placeholder) -->
+        <div class="video-card">
+            <div class="video-container" style="background: #1E293B; display: flex; align-items: center; justify-content: center;">
+                <span style="color: var(--text-muted); font-weight: 600;">Em Breve</span>
+            </div>
+            <div class="video-info">
+                <h3>Atravessando a Ponte da Amizade</h3>
+                <p>Bastidores da viagem, trâmites de aduana e translado terrestre otimizado passo a passo.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <section id="comunidades" class="communities">
+        <h2>Faça Parte da Nossa Comunidade</h2>
+        <p>Receba atualizações diárias, alertas de oportunidades de negócios e suporte direto.</p>
+        <div class="social-links">
+            <a href="#" target="_blank" class="social-btn">Telegram</a>
+            <a href="#" target="_blank" class="social-btn">WhatsApp</a>
+            <a href="#" target="_blank" class="social-btn">YouTube</a>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2026 Nexus Import. Todos os direitos reservados.</p>
+</footer>
+
+</body>
+  </html>
